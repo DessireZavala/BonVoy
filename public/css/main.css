@@ -1,0 +1,460 @@
+/* ===============================
+   VARIABLES / RESET
+================================ */
+:root{
+  --naranja: #ff7a00;
+  --naranja-claro: #ff9a3c;
+  --negro: #1c1c1c;
+  --gris: #f4f4f4;
+  --blanco: #ffffff;
+}
+
+*{
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body{
+  font-family: 'Poppins', Arial, sans-serif;
+  background: var(--gris);
+  color: var(--negro);
+}
+
+/* ===============================
+   HEADER
+================================ */
+.header{
+  background: var(--blanco);
+  padding: 14px 18px;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.navbar{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo{
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--naranja);
+}
+
+.avatar{
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+/* ===============================
+   HERO
+================================ */
+.hero{
+  background: url('../assets/img/descarga.jpg') center/cover no-repeat;
+  height: 340px;
+  padding: 20px;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  border-bottom-left-radius: 30px;
+  border-bottom-right-radius: 30px;
+}
+
+.hero h1{
+  font-size: 28px;
+  font-weight: 800;
+  line-height: 1.1;
+}
+
+.hero h1 span{
+  font-size: 22px;
+  font-weight: 400;
+}
+
+/* ===============================
+   SEARCH BOX
+================================ */
+.search-box{
+  margin: 15px 0;
+}
+
+.search-box input{
+  width: 100%;
+  padding: 14px 18px;
+  border-radius: 30px;
+  border: none;
+  outline: none;
+  font-size: 14px;
+}
+
+/* ===============================
+   ICONS
+================================ */
+.icons{
+  display: flex;
+  justify-content: space-between;
+  background: var(--blanco);
+  padding: 14px 10px;
+  border-radius: 25px;
+}
+
+.icon{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 11px;
+  color: var(--negro);
+}
+
+.icon img{
+  width: 26px;
+  height: 26px;
+  margin-bottom: 4px;
+}
+
+/* ===============================
+   SECCIONES GENERALES
+================================ */
+.home-section{
+  padding: 22px 20px;
+}
+
+.home-section h2{
+  font-size: 18px;
+  margin-bottom: 15px;
+}
+
+/* ===============================
+   DESTINOS POPULARES
+================================ */
+.cards-home{
+  display: grid;
+  gap: 20px;
+}
+
+.card-home{
+  background: var(--blanco);
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 8px 18px rgba(0,0,0,.12);
+}
+
+.card-home img{
+  width: 100%;
+  height: 160px;
+  object-fit: cover;
+}
+
+.card-info{
+  padding: 15px;
+}
+
+.card-info h3{
+  font-size: 16px;
+  margin-bottom: 4px;
+}
+
+.card-info p{
+  font-size: 14px;
+  color: gray;
+  margin-bottom: 10px;
+}
+
+.card-info a{
+  display: inline-block;
+  padding: 8px 18px;
+  background: var(--naranja);
+  color: white;
+  border-radius: 20px;
+  text-decoration: none;
+  font-size: 14px;
+}
+
+/* ===============================
+   ACTIVIDADES
+================================ */
+.activities{
+  display: grid;
+  gap: 18px;
+}
+
+.activity-card{
+  display: flex;
+  background: var(--blanco);
+  border-radius: 18px;
+  overflow: hidden;
+  box-shadow: 0 6px 15px rgba(0,0,0,.1);
+}
+
+.activity-card img{
+  width: 120px;
+  height: 100%;
+  object-fit: cover;
+}
+
+.activity-info{
+  padding: 12px;
+  flex: 1;
+}
+
+.activity-info h3{
+  font-size: 15px;
+  margin-bottom: 4px;
+}
+
+.activity-info p{
+  font-size: 13px;
+  color: gray;
+  margin-bottom: 8px;
+}
+
+.activity-info button{
+  background: var(--naranja);
+  color: white;
+  border: none;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 13px;
+}
+
+/* ===============================
+   NEOPASS
+================================ */
+.neopass{
+  background: #fafafa;
+}
+
+.neopass-cards{
+  display: grid;
+  gap: 20px;
+}
+
+.neopass-card{
+  padding: 20px;
+  border-radius: 22px;
+  color: white;
+}
+
+.neopass-card h3{
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.neopass-card .precio{
+  font-size: 22px;
+  font-weight: 800;
+  margin: 10px 0;
+}
+
+.neopass-card ul{
+  list-style: none;
+  font-size: 14px;
+  margin-bottom: 15px;
+}
+
+.neopass-card li{
+  margin-bottom: 6px;
+}
+
+.neopass-card button{
+  background: white;
+  color: var(--negro);
+  border: none;
+  padding: 8px 18px;
+  border-radius: 20px;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+/* COLORES NEOPASS */
+.neopass-card.basico{
+  background: linear-gradient(135deg, #ffd56b, #ffb703);
+}
+
+.neopass-card.plus{
+  background: linear-gradient(135deg, #ff8c42, #ff5f00);
+}
+
+.neopass-card.premium{
+  background: linear-gradient(135deg, #ff3d3d, #b80000);
+}
+
+/* ===============================
+   RESPONSIVE (TABLET+)
+================================ */
+@media (min-width: 768px){
+  .cards-home{
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .neopass-cards{
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.form-section{
+  padding: 20px;
+}
+
+form{
+  background: white;
+  padding: 20px;
+  border-radius: 20px;
+  box-shadow: 0 6px 15px rgba(0,0,0,.1);
+}
+
+form h3{
+  margin-top: 15px;
+  margin-bottom: 8px;
+}
+
+form input,
+form textarea{
+  width: 100%;
+  margin-bottom: 10px;
+  padding: 10px;
+  border-radius: 12px;
+  border: 1px solid #ddd;
+}
+
+form button{
+  background: var(--naranja);
+  color: white;
+  border: none;
+  padding: 12px;
+  width: 100%;
+  border-radius: 20px;
+  font-size: 16px;
+}
+
+.history-section{
+  padding: 20px;
+}
+
+.history-card{
+  background: white;
+  padding: 15px;
+  border-radius: 18px;
+  margin-bottom: 15px;
+  box-shadow: 0 6px 15px rgba(0,0,0,.1);
+}
+
+.history-card h3{
+  margin-bottom: 5px;
+}
+
+.estado{
+  color: green;
+  font-weight: 600;
+}
+
+.payment-section{
+  padding: 20px;
+}
+
+.payment-card{
+  background: white;
+  border-radius: 25px;
+  padding: 25px;
+  box-shadow: 0 8px 20px rgba(0,0,0,.15);
+  max-width: 400px;
+  margin: auto;
+  text-align: center;
+}
+
+.payment-card h3{
+  font-size: 28px;
+  margin: 10px 0 20px;
+}
+
+.payment-card input{
+  width: 100%;
+  padding: 12px;
+  border-radius: 15px;
+  border: 1px solid #ddd;
+  margin-bottom: 12px;
+}
+
+.payment-row{
+  display: flex;
+  gap: 10px;
+}
+
+.payment-card button{
+  background: linear-gradient(135deg,#ff7a18,#ffb347);
+  border: none;
+  padding: 14px;
+  width: 100%;
+  border-radius: 25px;
+  color: white;
+  font-size: 16px;
+  margin-top: 10px;
+}
+
+.secure{
+  margin-top: 15px;
+  font-size: 14px;
+  color: gray;
+}
+
+.estado{
+  font-weight: bold;
+  color: green;
+}
+.estado.cancelado{
+  color: red;
+}
+.estado.procesando{
+  color: orange;
+}
+.estado.pendiente{
+  color: gray;
+}
+.footer{
+  background: var(--blanco);
+  text-align: center;
+  padding: 15px 0;
+  margin-top: 20px;
+  box-shadow: 0 -2px 10px rgba(0,0,0,.1);
+}
+
+.main-header{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 25px;
+  background: white;
+  box-shadow: 0 4px 10px rgba(0,0,0,.1);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.logo{
+  font-size: 22px;
+  font-weight: bold;
+  color: var(--naranja);
+  cursor: pointer;
+}
+
+.nav-links{
+  display: flex;
+  gap: 20px;
+}
+
+.nav-links a{
+  text-decoration: none;
+  color: #333;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.nav-links a:hover{
+  color: var(--naranja);
+}
