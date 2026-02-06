@@ -2,51 +2,234 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Voucher de Pago | Bonvoy</title>
-    <link rel="stylesheet" href="{{ asset('css/main.css') }}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Voucher BonVoy #{{ $reserva->id }}</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Red+Hat+Display:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+
     <style>
-        .voucher-card { max-width: 600px; margin: 30px auto; border: 2px dashed #fbbf24; padding: 20px; border-radius: 10px; background: #fff; }
-        .header-voucher { border-bottom: 2px solid #eee; padding-bottom: 10px; margin-bottom: 20px; text-align: center; }
-        .info-row { display: flex; justify-content: space-between; margin-bottom: 10px; }
-        .btn-print { background: #1a1a1a; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; text-decoration: none; }
-        @media print { .btn-print, .no-print { display: none; } }
+        body {
+            font-family: 'Red Hat Display', sans-serif;
+            background-color: #f1f5f9;
+            color: #1e293b;
+            margin: 0;
+            padding: 0;
+        }
+
+        .voucher-wrapper {
+            max-width: 950px; /* Más ancho */
+            margin: 50px auto;
+            padding: 0 20px;
+        }
+
+        .ticket {
+            background: white;
+            display: flex;
+            border-radius: 30px;
+            overflow: hidden;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.1);
+            border: 1px solid #e2e8f0;
+        }
+
+        /* Lado Izquierdo (Info Principal) */
+        .ticket-main {
+            flex: 2;
+            padding: 40px;
+            border-right: 2px dashed #e2e8f0;
+            position: relative;
+        }
+
+        /* Lado Derecho (Resumen rápido/Corte) */
+        .ticket-stub {
+            flex: 0.8;
+            background-color: #f8fafc;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .logo-container {
+            margin-bottom: 30px;
+        }
+
+        .logo-container img {
+            height: 85px; /* Logo más grande */
+            width: auto;
+            object-contain: contain;
+        }
+
+        .ticket-label {
+            font-size: 0.65rem;
+            font-weight: 800;
+            color: #94a3b8;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 4px;
+        }
+
+        .ticket-value {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #1a3c4d; /* bonvoy-navy */
+            margin-bottom: 20px;
+        }
+
+        .dest-title {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 3.5rem;
+            color: #126e82; /* bonvoy-main */
+            line-height: 1;
+            margin-bottom: 30px;
+            letter-spacing: 1px;
+        }
+
+        .grid-info {
+            display: grid;
+            grid-template-cols: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        .status-pill {
+            background: #dcfce7;
+            color: #15803d;
+            padding: 5px 15px;
+            border-radius: 50px;
+            font-size: 0.7rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            display: inline-block;
+            margin-top: 10px;
+        }
+
+        .total-box {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #e2e8f0;
+        }
+
+        .total-price {
+            font-size: 2.5rem;
+            font-weight: 900;
+            color: #1a3c4d;
+        }
+
+        /* Círculos para el efecto de ticket */
+        .ticket-main::before, .ticket-main::after {
+            content: '';
+            position: absolute;
+            right: -15px;
+            width: 30px;
+            height: 30px;
+            background: #f1f5f9;
+            border-radius: 50%;
+        }
+        .ticket-main::before { top: -15px; }
+        .ticket-main::after { bottom: -15px; }
+
+        .btn-action {
+            background: #1a3c4d;
+            color: white;
+            padding: 12px 25px;
+            border-radius: 12px;
+            font-weight: 700;
+            text-decoration: none;
+            transition: 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn-action:hover {
+            background: #126e82;
+            transform: translateY(-2px);
+        }
+
+        @media (max-width: 768px) {
+            .ticket { flex-direction: column; }
+            .ticket-main { border-right: none; border-bottom: 2px dashed #e2e8f0; }
+            .ticket-main::before, .ticket-main::after { display: none; }
+        }
+
+        @media print {
+            .no-print { display: none !important; }
+            body { background: white; }
+            .voucher-wrapper { margin: 0; padding: 0; max-width: 100%; }
+            .ticket { box-shadow: none; border: 1px solid #000; }
+        }
     </style>
 </head>
-<body style="background: #f4f4f4;">
+<body>
 
-    <div class="voucher-card">
-        <div class="header-voucher">
-            <h2>BONVOY - COMPROBANTE DE PAGO</h2>
-            <p>ID de Reservación: #00{{ $reserva->id }}</p>
-        </div>
-
-        <div class="info-row">
-            <span><strong>Cliente:</strong></span>
-            <span>{{ auth()->user()->name }}</span>
-        </div>
-        <div class="info-row">
-            <span><strong>Destino/Servicio:</strong></span>
-            <span>{{ $reserva->contenido->titulo }}</span>
-        </div>
-        <div class="info-row">
-            <span><strong>Fecha de Pago:</strong></span>
-            <span>{{ $reserva->created_at->format('d/m/Y H:i') }}</span>
-        </div>
-        <div class="info-row">
-            <span><strong>Estado:</strong></span>
-            <span style="color: green; font-weight: bold;">{{ $reserva->estado }}</span>
-        </div>
+    <div class="voucher-wrapper">
         
-        <hr>
-        
-        <div class="info-row" style="font-size: 1.2em;">
-            <span><strong>Total Pagado:</strong></span>
-            <strong>${{ number_format($reserva->total, 2) }} MXN</strong>
+        <div class="ticket">
+            <div class="ticket-main">
+                <div class="logo-container">
+                    <img src="{{ asset('assets/img/logo.png') }}" alt="BonVoy">
+                </div>
+
+                <div class="ticket-label">Destino / Experiencia</div>
+                <h2 class="dest-title">{{ $reserva->contenido->titulo }}</h2>
+
+                <div class="grid-info">
+                    <div>
+                        <div class="ticket-label">Pasajero</div>
+                        <div class="ticket-value">{{ auth()->user()->name }}</div>
+                    </div>
+                    <div>
+                        <div class="ticket-label">Fecha de Compra</div>
+                        <div class="ticket-value">{{ $reserva->created_at->format('d/m/Y') }}</div>
+                    </div>
+                    <div>
+                        <div class="ticket-label">ID Reservación</div>
+                        <div class="ticket-value">#BNV-{{ str_pad($reserva->id, 5, '0', STR_PAD_LEFT) }}</div>
+                    </div>
+                    <div>
+                        <div class="ticket-label">Estatus</div>
+                        <div class="status-pill">{{ $reserva->estado }}</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="ticket-stub">
+                <div class="ticket-label">Monto Pagado</div>
+                <div class="total-price">${{ number_format($reserva->total, 0) }}</div>
+                <div class="ticket-label" style="margin-top: -5px;">MXN</div>
+
+                <div style="margin-top: 40px;">
+                    <svg width="100" height="100" viewBox="0 0 24 24" fill="none" stroke="#1a3c4d" stroke-width="1" stroke-linecap="round" stroke-linejoin="round opacity-20">
+                        <rect x="3" y="3" width="7" height="7"></rect>
+                        <rect x="14" y="3" width="7" height="7"></rect>
+                        <rect x="14" y="14" width="7" height="7"></rect>
+                        <rect x="3" y="14" width="7" height="7"></rect>
+                        <line x1="7" y1="7" x2="7" y2="7"></line>
+                        <line x1="17" y1="7" x2="17" y2="7"></line>
+                        <line x1="17" y1="17" x2="17" y2="17"></line>
+                        <line x1="7" y1="17" x2="7" y2="17"></line>
+                    </svg>
+                    <p style="font-size: 0.6rem; color: #94a3b8; margin-top: 10px; font-weight: 700;">ESCANEAR EN LLEGADA</p>
+                </div>
+            </div>
         </div>
 
-        <div style="text-align: center; margin-top: 30px;" class="no-print">
-            <a href="javascript:window.print()" class="btn-print">Imprimir Voucher</a>
-            <a href="{{ route('home') }}" style="margin-left: 10px; color: #666;">Volver al Inicio</a>
+        <div class="no-print" style="margin-top: 40px; display: flex; justify-content: space-between; align-items: center;">
+            <a href="{{ route('home') }}" style="color: #94a3b8; font-weight: 700; text-decoration: none; font-size: 0.9rem;" class="hover:text-bonvoy-main transition">
+                &larr; Volver al inicio
+            </a>
+
+            <div style="display: flex; gap: 15px;">
+                <a href="javascript:window.print()" class="btn-action">
+                    <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path></svg>
+                    Imprimir Comprobante
+                </a>
+            </div>
         </div>
     </div>
 
