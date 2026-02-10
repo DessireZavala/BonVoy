@@ -13,7 +13,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Red+Hat+Display:wght@300;400;500;700;900&display=swap" rel="stylesheet">
 
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
-
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+        <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
         @vite(['resources/css/app.css', 'resources/js/app.js'])<body class="font-sans antialiased bg-slate-50 text-slate-800">
     <div id="app" class="min-h-screen flex flex-col">
         
@@ -43,6 +44,13 @@
                                 </a>
                             @endif
                         @else
+                        {{-- Botón de Favoritos --}}
+                        <a href="{{ route('favorites.index') }}" class="inline-flex items-center px-3 py-2 text-sm font-bold text-gray-500 hover:text-bonvoy-main transition mr-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1 text-red-500" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M11.645 20.91l-.007-.003-.022-.012a15.247 15.247 0 01-.383-.218 25.18 25.18 0 01-4.244-3.17C4.688 15.36 2.25 12.174 2.25 8.25 2.25 5.322 4.714 3 7.688 3A5.5 5.5 0 0112 5.052 5.5 5.5 0 0116.313 3c2.973 0 5.437 2.322 5.437 5.25 0 3.925-2.438 7.111-4.739 9.256a25.175 25.175 0 01-4.244 3.17 15.247 15.247 0 01-.383.219l-.022.012-.007.004-.003.001z" />
+                            </svg>
+                            <span>Favoritos</span>
+                        </a>
                             <div class="relative" x-data="{ dropdownOpen: false }">
                                 <button @click="dropdownOpen = !dropdownOpen" @click.away="dropdownOpen = false" class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-bold rounded-md text-gray-500 bg-white hover:text-bonvoy-main focus:outline-none transition">
                                     {{ Auth::user()->name }}
@@ -97,6 +105,9 @@
                             <div class="font-medium text-sm text-gray-500">{{ Auth::user()->email }}</div>
                         </div>
                         <div class="mt-3 space-y-1">
+                        <a href="{{ route('favorites.index') }}" class="block pl-3 pr-4 py-2 border-l-4 border-transparent text-base font-medium text-gray-600 hover:text-bonvoy-main hover:bg-gray-50 hover:border-bonvoy-main transition">
+                            ❤️ Mis Favoritos
+                        </a>
                             <form method="POST" action="{{ route('logout') }}">
                                 @csrf
                                 <a href="{{ route('logout') }}" onclick="event.preventDefault(); this.closest('form').submit();" class="block pl-3 pr-4 py-2 border-l-4 border-transparent text-base font-medium text-gray-600 hover:text-red-600 hover:bg-red-50 hover:border-red-600 transition">
@@ -112,6 +123,11 @@
         <main>
             @yield('content')
         </main>
+        {{-- INSERTA EL FOOTER AQUÍ --}}
+        <footer class="bg-white border-t border-gray-200 pt-10 pb-5 mt-auto">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            </div>
+        </footer>
     </div>
 </body>
 </html>

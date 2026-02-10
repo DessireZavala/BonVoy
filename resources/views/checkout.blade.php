@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Checkout | BonVoy</title>
+    <title>Checkout Seguro | BonVoy</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -12,165 +12,203 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
     <style>
+        /* Patrón de fondo profesional */
+        .bg-pattern {
+            background-color: #f8fafc;
+            background-image: radial-gradient(#cbd5e1 0.5px, transparent 0.5px);
+            background-size: 24px 24px;
+        }
+
         /* Ocultar flechas en inputs numéricos */
         input[type=number]::-webkit-inner-spin-button, 
         input[type=number]::-webkit-outer-spin-button { 
             -webkit-appearance: none; margin: 0; 
         }
+
+        /* Efecto de cristal para el header */
+        .glass-header {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+        }
     </style>
 </head>
-<body class="font-sans text-bonvoy-dark antialiased bg-bonvoy-gray min-h-screen flex flex-col">
+<body class="font-sans text-bonvoy-dark antialiased bg-pattern min-h-screen flex flex-col">
 
-    <header class="w-full bg-white py-4 shadow-sm border-b border-gray-200">
+    <header class="w-full glass-header py-4 shadow-sm border-b border-gray-200 sticky top-0 z-50">
         <div class="max-w-7xl mx-auto px-6 flex justify-between items-center">
-            
-            <a href="{{ route('home') }}">
-                <img src="{{ asset('assets/img/logo.png') }}" alt="BonVoy" class="h-20 w-auto">
+            <a href="{{ route('home') }}" class="transition hover:opacity-80">
+                <img src="{{ asset('assets/img/logo.png') }}" alt="BonVoy" class="h-16 w-auto">
             </a>
 
-            <div class="text-bonvoy-navy font-bold text-sm flex items-center gap-2 bg-gray-50 px-3 py-1 rounded-full border border-gray-100">
-                <svg class="w-4 h-4 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
-                <span class="opacity-90 hidden md:inline">Pago 100% Seguro</span>
-                <span class="opacity-90 md:hidden">Seguro</span>
+            <div class="flex items-center gap-4">
+                <div class="hidden sm:flex items-center gap-2 text-xs font-bold text-gray-400 uppercase tracking-widest">
+                    <span class="text-bonvoy-main text-lg">●</span> Datos
+                    <span class="mx-2">──</span>
+                    <span class="text-bonvoy-main text-lg">●</span> Pago
+                    <span class="mx-2">──</span>
+                    <span class="text-gray-300">○</span> Confirmación
+                </div>
+                <div class="bg-green-50 text-green-700 px-4 py-2 rounded-full border border-green-100 flex items-center gap-2 text-xs font-bold shadow-sm">
+                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M2.166 4.999A11.954 11.954 0 0010 1.944 11.954 11.954 0 0017.834 5c.11.65.166 1.32.166 2.001 0 5.225-3.34 9.67-8 11.317C5.34 16.67 2 12.225 2 7c0-.682.057-1.35.166-2.001zm11.541 3.708a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>
+                    SSL SECURE
+                </div>
             </div>
         </div>
     </header>
 
-    <main class="flex-grow flex items-center justify-center py-12 px-6">
-        <div class="w-full max-w-5xl grid lg:grid-cols-5 gap-8">
+    <main class="flex-grow flex items-start justify-center py-12 px-6">
+        <div class="w-full max-w-6xl grid lg:grid-cols-12 gap-10">
             
-            <div class="lg:col-span-2 order-2 lg:order-1">
-                <div class="bg-white rounded-3xl p-6 shadow-lg border border-gray-100 sticky top-6">
-                    <h3 class="text-lg font-bold text-bonvoy-navy mb-4 border-b pb-2">Resumen de tu viaje</h3>
+            <div class="lg:col-span-4 order-2 lg:order-1">
+                <div class="bg-white rounded-3xl p-8 shadow-xl shadow-slate-200/50 border border-gray-100 sticky top-28">
+                    <h3 class="text-xl font-bold text-bonvoy-navy mb-6 flex items-center gap-2">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 118 0m-4 10v2a2 2 0 01-2 2H6a2 2 0 01-2-2V7a2 2 0 012-2h2m4 0V5a2 2 0 114 0v2m-6 4h6m-6 4h6"></path></svg>
+                        Tu Reserva
+                    </h3>
                     
-                    <div class="flex gap-4 mb-4">
+                    <div class="flex gap-4 mb-8 bg-gray-50 p-4 rounded-2xl">
                         <img src="{{ $destino->imagenPrincipal ? asset('storage/' . $destino->imagenPrincipal->ruta) : 'https://images.unsplash.com/photo-1516426122078-c23e76319801?q=80&w=200' }}" 
-                             class="w-20 h-20 rounded-xl object-cover shadow-sm" alt="Destino">
-                        <div>
-                            <h4 class="font-bold text-bonvoy-dark leading-tight">{{ $destino->titulo }}</h4>
-                            <span class="text-xs text-bonvoy-teal font-semibold uppercase">{{ ucfirst($destino->tipo) }}</span>
+                             class="w-20 h-20 rounded-xl object-cover shadow-md" alt="Destino">
+                        <div class="flex flex-col justify-center">
+                            <h4 class="font-bold text-bonvoy-dark leading-tight text-lg">{{ $destino->titulo }}</h4>
+                            <span class="text-xs text-bonvoy-teal font-bold uppercase tracking-wider">{{ ucfirst($destino->tipo) }}</span>
                         </div>
                     </div>
 
-                    <div class="space-y-3 text-sm text-gray-600 mb-6">
-                        <div class="flex justify-between">
-                            <span>Precio base</span>
+                    <div class="space-y-4 mb-8">
+                        <div class="flex justify-between text-gray-500 font-medium">
+                            <span>Subtotal</span>
                             <span>${{ number_format($destino->precio, 2) }}</span>
                         </div>
-                        <div class="flex justify-between">
-                            <span>Impuestos y tasas</span>
-                            <span>$0.00</span>
+                        <div class="flex justify-between text-gray-500 font-medium italic">
+                            <span>Cargo por servicio</span>
+                            <span class="text-green-600">¡Gratis!</span>
                         </div>
-                        <div class="border-t pt-3 flex justify-between items-center font-bold text-bonvoy-navy text-lg">
-                            <span>Total a pagar</span>
-                            <span>${{ number_format($destino->precio, 2) }}</span>
+                        <div class="border-t border-dashed pt-4 flex justify-between items-center">
+                            <span class="font-bold text-bonvoy-navy">Total Final</span>
+                            <span class="text-2xl font-black text-bonvoy-main">${{ number_format($destino->precio, 2) }}</span>
                         </div>
                     </div>
 
-                    <div class="bg-blue-50 p-3 rounded-lg flex items-start gap-3 text-xs text-blue-800">
-                        <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                        <p>No se te cobrará nada hasta que completes este paso. Cancelación gratuita disponible según términos.</p>
+                    <div class="bg-bonvoy-navy/5 p-4 rounded-2xl border border-bonvoy-navy/10">
+                        <div class="flex gap-3">
+                            <div class="bg-bonvoy-main text-white p-1 rounded-full h-fit mt-1">
+                                <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"></path></svg>
+                            </div>
+                            <p class="text-xs text-bonvoy-navy/80 leading-relaxed">
+                                <span class="font-bold">Garantía BonVoy:</span> Cancelación flexible y soporte premium incluido en tu compra.
+                            </p>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <div class="lg:col-span-3 order-1 lg:order-2">
-                <div class="bg-white rounded-3xl shadow-xl border border-gray-100 overflow-hidden">
+            <div class="lg:col-span-8 order-1 lg:order-2">
+                <div class="bg-white rounded-[2.5rem] shadow-2xl shadow-slate-300/40 border border-gray-100 overflow-hidden">
                     
-                    <div class="bg-bonvoy-navy p-6 text-white relative overflow-hidden">
-                        <div class="absolute top-0 right-0 w-32 h-32 bg-white/5 rounded-full -mr-10 -mt-10 blur-2xl"></div>
-                        
-                        <h2 class="font-display text-2xl tracking-wide relative z-10">Finalizar Reservación</h2>
-                        <p class="text-white/70 text-sm relative z-10">Completa tus datos para asegurar tu lugar.</p>
+                    <div class="bg-gradient-to-r from-bonvoy-navy to-slate-800 p-10 text-white relative">
+                        <div class="absolute top-0 right-0 w-64 h-64 bg-bonvoy-main/10 rounded-full -mr-20 -mt-20 blur-3xl"></div>
+                        <h2 class="font-display text-4xl tracking-tight relative z-10 mb-2">Checkout Seguro</h2>
+                        <p class="text-white/60 text-lg font-light relative z-10">Estás a un paso de tu próxima gran aventura.</p>
                     </div>
 
-                    <div class="p-8">
-                        <form action="{{ route('pago.procesar') }}" method="POST">
+                    <div class="p-10">
+                        <form action="{{ route('pago.procesar') }}" method="POST" class="space-y-10">
                             @csrf
                             <input type="hidden" name="contenido_id" value="{{ $destino->id }}">
                             <input type="hidden" name="precio_total" value="{{ $destino->precio }}">
 
-                            <div class="mb-8">
-                                <h3 class="text-bonvoy-dark font-bold mb-4 flex items-center gap-2">
-                                    <span class="bg-bonvoy-light/20 text-bonvoy-main w-6 h-6 rounded-full flex items-center justify-center text-xs">1</span>
-                                    Información de Contacto
+                            <section>
+                                <h3 class="text-bonvoy-dark font-bold text-lg mb-6 flex items-center gap-3">
+                                    <span class="bg-bonvoy-main text-white w-8 h-8 rounded-xl flex items-center justify-center shadow-lg shadow-bonvoy-main/30">1</span>
+                                    Información del Viajero
                                 </h3>
-                                <div class="grid md:grid-cols-2 gap-4">
-                                    <div>
-                                        <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Nombre Completo</label>
-                                        <input type="text" name="nombre" placeholder="Como aparece en tu ID" required
-                                               class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-gray-700 focus:outline-none focus:ring-2 focus:ring-bonvoy-main/50 focus:border-bonvoy-main transition">
+                                <div class="grid md:grid-cols-2 gap-6">
+                                    <div class="space-y-1">
+                                        <label class="text-xs font-black text-slate-400 uppercase ml-1">Nombre Completo</label>
+                                        <input type="text" name="nombre" placeholder="Nombre como en pasaporte" required
+                                               class="w-full bg-slate-50 border-2 border-slate-100 rounded-2xl px-5 py-4 text-gray-700 focus:outline-none focus:border-bonvoy-main focus:bg-white transition-all">
                                     </div>
-                                    <div>
-                                        <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Correo Electrónico</label>
+                                    <div class="space-y-1">
+                                        <label class="text-xs font-black text-slate-400 uppercase ml-1">Correo Electrónico</label>
                                         <input type="email" value="{{ auth()->user()->email }}" readonly
-                                               class="w-full bg-gray-100 border border-gray-200 rounded-xl px-4 py-3 text-gray-500 cursor-not-allowed">
+                                               class="w-full bg-slate-100 border-2 border-slate-100 rounded-2xl px-5 py-4 text-slate-400 cursor-not-allowed font-medium">
                                     </div>
                                 </div>
-                            </div>
+                            </section>
 
-                            <div class="mb-8">
-                                <h3 class="text-bonvoy-dark font-bold mb-4 flex items-center gap-2">
-                                    <span class="bg-bonvoy-light/20 text-bonvoy-main w-6 h-6 rounded-full flex items-center justify-center text-xs">2</span>
-                                    Método de Pago
+                            <section>
+                                <h3 class="text-bonvoy-dark font-bold text-lg mb-6 flex items-center gap-3">
+                                    <span class="bg-bonvoy-main text-white w-8 h-8 rounded-xl flex items-center justify-center shadow-lg shadow-bonvoy-main/30">2</span>
+                                    Detalles del Pago
                                 </h3>
 
-                                <div class="bg-gradient-to-br from-gray-800 to-black text-white p-6 rounded-2xl mb-6 shadow-lg relative overflow-hidden group hover:scale-[1.01] transition-transform duration-300">
-                                    <div class="absolute top-0 right-0 -mt-4 -mr-4 w-24 h-24 bg-white/10 rounded-full blur-xl"></div>
-                                    <div class="flex justify-between items-start mb-8">
-                                        <div class="text-xs opacity-75 tracking-widest">TARJETA DE CRÉDITO</div>
-                                        <svg class="w-10 h-6 text-white/80" fill="currentColor" viewBox="0 0 24 24"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/></svg>
-                                    </div>
-                                    <div class="text-2xl font-mono tracking-widest mb-4">•••• •••• •••• ••••</div>
-                                    <div class="flex justify-between text-xs font-mono uppercase">
-                                        <div>
-                                            <span class="block opacity-50 text-[0.6rem]">Titular</span>
-                                            <span>{{ auth()->user()->name }}</span>
+                                <div class="max-w-md mx-auto mb-10 group perspective">
+                                    <div class="bg-gradient-to-br from-slate-900 via-slate-800 to-bonvoy-navy text-white p-8 rounded-[2rem] shadow-2xl relative overflow-hidden transition-transform duration-500 transform-gpu group-hover:rotate-1">
+                                        <div class="absolute -bottom-10 -right-10 w-40 h-40 bg-white/5 rounded-full blur-3xl"></div>
+                                        <div class="flex justify-between items-start mb-12">
+                                            <div class="w-12 h-10 bg-gradient-to-br from-yellow-200 to-yellow-500 rounded-lg opacity-80 shadow-inner"></div>
+                                            <div class="text-right italic font-black text-xl opacity-40 uppercase tracking-tighter">BonVoy Card</div>
                                         </div>
-                                        <div>
-                                            <span class="block opacity-50 text-[0.6rem]">Expira</span>
-                                            <span>MM/AA</span>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="space-y-4">
-                                    <div>
-                                        <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Número de Tarjeta</label>
-                                        <div class="relative">
-                                            <input type="text" placeholder="0000 0000 0000 0000" maxlength="19" required
-                                                class="w-full bg-gray-50 border border-gray-200 rounded-xl pl-12 pr-4 py-3 text-gray-700 focus:outline-none focus:ring-2 focus:ring-bonvoy-main/50 focus:border-bonvoy-main transition font-mono">
-                                            <svg class="w-6 h-6 text-gray-400 absolute left-3 top-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"></path></svg>
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="grid grid-cols-2 gap-4">
-                                        <div>
-                                            <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Vencimiento</label>
-                                            <input type="text" placeholder="MM / AA" maxlength="5" required
-                                                class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-center text-gray-700 focus:outline-none focus:ring-2 focus:ring-bonvoy-main/50 focus:border-bonvoy-main transition">
-                                        </div>
-                                        <div>
-                                            <label class="block text-xs font-bold text-gray-500 uppercase mb-1">CVC / CVV</label>
-                                            <div class="relative">
-                                                <input type="text" placeholder="123" maxlength="4" required
-                                                    class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-center text-gray-700 focus:outline-none focus:ring-2 focus:ring-bonvoy-main/50 focus:border-bonvoy-main transition">
-                                                <svg class="w-4 h-4 text-gray-400 absolute right-3 top-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
+                                        <div class="text-2xl font-mono tracking-[0.3em] mb-8 drop-shadow-md">•••• •••• •••• ••••</div>
+                                        <div class="flex justify-between items-end">
+                                            <div>
+                                                <div class="text-[0.6rem] uppercase opacity-50 font-bold mb-1 tracking-widest">Titular</div>
+                                                <div class="font-mono text-sm uppercase">{{ auth()->user()->name }}</div>
+                                            </div>
+                                            <div class="text-right">
+                                                <div class="text-[0.6rem] uppercase opacity-50 font-bold mb-1 tracking-widest">Expira</div>
+                                                <div class="font-mono text-sm uppercase">MM/YY</div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
 
-                            <button type="submit" 
-                                class="w-full bg-bonvoy-main hover:bg-bonvoy-teal text-white font-bold py-4 rounded-xl shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300 flex items-center justify-center gap-2 text-lg">
-                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                                Pagar ${{ number_format($destino->precio, 2) }} MXN
-                            </button>
-                            
-                            <p class="text-center text-xs text-gray-400 mt-4">
-                                Al hacer clic en "Pagar", aceptas nuestros <a href="#" class="text-bonvoy-main hover:underline">Términos y Condiciones</a>.
-                            </p>
+                                <div class="space-y-6">
+                                    <div class="space-y-1">
+                                        <label class="text-xs font-black text-slate-400 uppercase ml-1">Número de Tarjeta</label>
+                                        <div class="relative">
+                                            <input type="text" placeholder="0000 0000 0000 0000" maxlength="19" required
+                                                class="w-full bg-slate-50 border-2 border-slate-100 rounded-2xl pl-14 pr-5 py-4 text-gray-700 focus:outline-none focus:border-bonvoy-main focus:bg-white transition-all font-mono tracking-wider">
+                                            <div class="absolute left-5 top-1/2 -translate-y-1/2 text-slate-300">
+                                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"></path></svg>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="grid grid-cols-2 gap-6">
+                                        <div class="space-y-1">
+                                            <label class="text-xs font-black text-slate-400 uppercase ml-1">Vencimiento</label>
+                                            <input type="text" placeholder="MM / YY" maxlength="5" required
+                                                class="w-full bg-slate-50 border-2 border-slate-100 rounded-2xl px-5 py-4 text-center text-gray-700 focus:outline-none focus:border-bonvoy-main focus:bg-white transition-all font-mono">
+                                        </div>
+                                        <div class="space-y-1">
+                                            <label class="text-xs font-black text-slate-400 uppercase ml-1">CVC / CVV</label>
+                                            <div class="relative">
+                                                <input type="text" placeholder="123" maxlength="4" required
+                                                    class="w-full bg-slate-50 border-2 border-slate-100 rounded-2xl px-5 py-4 text-center text-gray-700 focus:outline-none focus:border-bonvoy-main focus:bg-white transition-all font-mono">
+                                                <div class="absolute right-5 top-1/2 -translate-y-1/2 text-slate-300">
+                                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </section>
+
+                            <div class="pt-6">
+                                <button type="submit" 
+                                    class="group relative w-full bg-bonvoy-main text-white font-black py-5 rounded-[1.5rem] shadow-xl shadow-bonvoy-main/40 hover:shadow-2xl hover:shadow-bonvoy-main/50 transform hover:-translate-y-1 transition-all duration-300 overflow-hidden">
+                                    <div class="absolute inset-0 w-1/4 h-full bg-white/20 -skew-x-12 -translate-x-full group-hover:animate-shine"></div>
+                                    <span class="relative flex items-center justify-center gap-3 text-xl uppercase tracking-tighter">
+                                        Confirmar Pago ${{ number_format($destino->precio, 2) }}
+                                    </span>
+                                </button>
+                                
+                                <p class="text-center text-[0.65rem] text-slate-400 mt-6 leading-relaxed px-10">
+                                    Al completar tu pago, confirmas que has leído y aceptas nuestros <a href="#" class="text-bonvoy-main font-bold hover:underline">Términos de Servicio</a> y <a href="#" class="text-bonvoy-main font-bold hover:underline">Políticas de Cancelación</a>.
+                                </p>
+                            </div>
                         </form>
                     </div>
                 </div>
@@ -178,8 +216,13 @@
         </div>
     </main>
 
-    <footer class="bg-white border-t py-6 text-center text-xs text-gray-500 mt-auto">
-        <p>&copy; {{ date('Y') }} BonVoy Inc. Todos los derechos reservados.</p>
+    <footer class="py-10 text-center space-y-4">
+        <div class="flex justify-center items-center gap-6 opacity-30 grayscale hover:grayscale-0 transition duration-500">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/5/5e/Visa_Inc._logo.svg" class="h-4" alt="Visa">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/2/2a/Mastercard-logo.svg" class="h-6" alt="Mastercard">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" class="h-5" alt="Paypal">
+        </div>
+        <p class="text-[0.6rem] text-slate-400 font-bold uppercase tracking-[0.2em]">&copy; {{ date('Y') }} BonVoy by NeoTrips • Global Travel Solutions</p>
     </footer>
 
 </body>

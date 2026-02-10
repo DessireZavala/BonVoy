@@ -8,8 +8,9 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::create('reservas', function (Blueprint $table) {
-            $table->id();
+            $table->id(); // Equivale a bigint(20) unsigned primary key auto_increment
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->integer('contenido_id')->nullable(); 
             $table->decimal('total', 10, 2);
             $table->enum('estado', ['pendiente', 'confirmada', 'cancelada'])
                   ->default('pendiente');
@@ -23,4 +24,3 @@ return new class extends Migration {
         Schema::dropIfExists('reservas');
     }
 };
-

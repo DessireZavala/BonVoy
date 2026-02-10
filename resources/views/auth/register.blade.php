@@ -250,7 +250,7 @@
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" /></svg>
                     Contraseña
                 </label>
-                <input id="password" type="password" class="custom-input @error('password') is-invalid @enderror" name="password" required autocomplete="new-password" placeholder="••••••••">
+                <input id="password" type="password" class="custom-input @error('password') is-invalid @enderror" name="password" required autocomplete="new-password" placeholder="Crea una contraseña">
                 @error('password')
                     <span style="display:block; font-size: 0.75em; margin-left: 15px; margin-top: 3px; color: #e3342f; font-weight: bold;">
                         <strong>{{ $message }}</strong>
@@ -269,6 +269,20 @@
             <button type="submit" class="btn-register">
                 REGISTRARSE
             </button>
+            <div class="mt-4">
+    <label for="terms" class="inline-flex items-center">
+        <input type="checkbox" name="terms" id="terms" class="rounded border-gray-300 text-bonvoy-main shadow-sm focus:ring-bonvoy-teal" required>
+        <span class="ml-2 text-sm text-gray-600">
+            Estoy de acuerdo con los 
+            <a target="_blank" href="{{ route('terms') }}" class="underline text-sm text-gray-600 hover:text-gray-900">
+                Términos de servicio
+            </a> y 
+            <a target="_blank" href="{{ route('privacy') }}" class="underline text-sm text-gray-600 hover:text-gray-900">
+                Política de privacidad
+            </a>
+        </span>
+    </label>
+</div>
         </form>
 
         <div class="footer-link">

@@ -40,4 +40,10 @@ class User extends Authenticatable
     {
         return $this->role === 'admin';
     }
+
+    public function favorites()
+    {
+        return $this->hasMany(Favorite::class);
+    }
+
 }

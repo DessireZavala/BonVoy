@@ -34,7 +34,13 @@
                             </a>
                         @endif
                     @else
-                        <a href="{{ route('user.perfil') }}" class="hover:text-bonvoy-light transition">MI HISTORIAL</a>
+                        <a href="{{ route('user.perfil') }}" class="hover:text-bonvoy-light transition uppercase">Mi Historial</a>
+                    @auth
+                        <a href="{{ route('favorites.index') }}" class="hover:text-bonvoy-light transition flex items-center gap-1 uppercase">
+                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M11.645 20.91l-.007-.003-.022-.012a15.247 15.247 0 01-.383-.218 25.18 25.18 0 01-4.244-3.17C4.688 15.36 2.25 12.174 2.25 8.25 2.25 5.322 4.714 3 7.688 3A5.5 5.5 0 0112 5.052 5.5 5.5 0 0116.313 3c2.973 0 5.437 2.322 5.437 5.25 0 3.925-2.438 7.111-4.739 9.256a25.175 25.175 0 01-4.244 3.17 15.247 15.247 0 01-.383.219l-.022.012-.007.004-.003.001z" /></svg>
+                            Favoritos
+                        </a>
+                    @endauth
                         @if(Auth::user()->role == 'admin')
                             <a href="{{ route('admin.dashboard') }}" class="bg-yellow-400 text-bonvoy-navy px-3 py-1 rounded-md hover:bg-yellow-300 transition shadow-lg text-xs uppercase tracking-wider">
                                 PANEL ADMIN
@@ -72,10 +78,10 @@
                     <span class="text-transparent bg-clip-text bg-gradient-to-r from-bonvoy-light to-white">SAFARI</span>
                 </h1>
                 
-                <form action="{{ route('home') }}" method="GET" class="w-full max-w-2xl bg-white/10 backdrop-blur-md border border-white/20 p-1.5 rounded-full flex gap-2 shadow-2xl relative z-20 group transition-all hover:bg-white/15">
+                <form id="search-form" action="{{ route('home') }}" method="GET" class="w-full max-w-2xl bg-white/10 backdrop-blur-md border border-white/20 p-1.5 rounded-full flex gap-2 shadow-2xl relative z-20 group transition-all hover:bg-white/15">
                     <div class="flex-1 bg-white rounded-full flex items-center px-5 transition focus-within:ring-2 focus-within:ring-bonvoy-main h-12 md:h-14">
                         <svg class="w-5 h-5 text-gray-400 mr-3 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
-                        <input type="text" name="search" value="{{ request('search') }}" 
+                        <input type="text" id="main-search-input" name="search" value="{{ request('search') }}" 
                             class="w-full bg-transparent border-none outline-none text-gray-700 placeholder-gray-400 focus:ring-0 text-base md:text-lg truncate" 
                             placeholder="Busca tu próximo viaje...">
                     </div>
@@ -89,7 +95,7 @@
         <div class="relative z-10 -mt-10 md:-mt-12 max-w-3xl mx-auto px-4">
             <div class="bg-white rounded-[2rem] shadow-2xl p-4 md:p-6 flex flex-wrap justify-center md:justify-between items-center border border-gray-100 gap-4 md:gap-8">
                 
-                <a href="{{ route('home', ['search' => 'destino']) }}" class="group flex flex-col items-center gap-2 cursor-pointer transition hover:-translate-y-1 w-20">
+                <a href="{{ route('vuelos.index') }}" class="group flex flex-col items-center gap-2 cursor-pointer transition hover:-translate-y-1 w-20">
                     <div class="w-14 h-14 md:w-16 md:h-16 bg-gray-50 rounded-2xl flex items-center justify-center group-hover:bg-bonvoy-main transition duration-300 border border-transparent group-hover:border-bonvoy-main">
                         <img src="{{ asset('assets/img/avionicon.png') }}" class="w-8 h-8 object-contain transition group-hover:brightness-0 group-hover:invert opacity-70 group-hover:opacity-100">
                     </div>
@@ -143,7 +149,23 @@
                                 <img src="https://images.unsplash.com/photo-1500835595353-b0ad2e58b412" class="w-full h-full object-cover group-hover:scale-110 transition duration-700">
                             @endif
                             <div class="absolute inset-0 bg-gradient-to-t from-bonvoy-navy/80 via-transparent to-transparent opacity-80"></div>
-                            
+                            @auth
+                            <form action="{{ route('favorites.toggle', [$item->id, 'Contenido']) }}" method="POST" class="absolute top-4 left-4 z-20">
+                                @csrf
+                                <button type="submit" class="bg-white/90 backdrop-blur-sm p-2 rounded-full shadow-md hover:bg-white transition group/fav">
+                                    <svg xmlns="http://www.w3.org/2000/svg" 
+                                        class="h-5 w-5 {{ Auth::user()->favorites()->where('favorable_id', $item->id)->exists() ? 'text-red-500' : 'text-gray-400 group-hover/fav:text-red-300' }}" 
+                                        fill="{{ Auth::user()->favorites()->where('favorable_id', $item->id)->exists() ? 'currentColor' : 'none' }}" 
+                                        viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                                    </svg>
+                                </button>
+                            </form>
+                            @endauth
+
+                            <div class="absolute top-4 right-4 bg-bonvoy-main text-white px-3 py-1 rounded-full text-xs font-black shadow-lg z-20">
+                                {{ number_format($item->rating ?? 0.0, 1) }}
+                            </div>
                             <div class="absolute top-4 right-4">
                                 <span class="bg-white/90 backdrop-blur-sm text-bonvoy-navy px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider flex items-center gap-2 shadow-sm">
                                     @if($item->tipo == 'destino') <img src="{{ asset('assets/img/avionicon.png') }}" class="w-4 h-4 object-contain">
@@ -317,6 +339,19 @@
         if(sendBtn) sendBtn.onclick = sendMessage;
         if(chatInput) chatInput.onkeypress = (e) => { if(e.key === 'Enter') sendMessage(); };
     </script>
+
+    <script>
+    document.getElementById('search-form').onsubmit = function(e) {
+        const query = document.getElementById('main-search-input').value.toLowerCase();
+        // Palabras que disparan la sección de vuelos
+        const flightKeywords = ['vuelo', 'vuelos', 'avion', 'boletos', 'duffel'];
+        
+        if (flightKeywords.some(word => query.includes(word))) {
+            e.preventDefault(); // Detenemos la búsqueda normal
+            window.location.href = "{{ route('vuelos.index') }}"; // Mandamos a vuelos
+        }
+    };
+</script>
 
 </body>
 </html>

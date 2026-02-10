@@ -8,6 +8,8 @@ use App\Http\Middleware\AdminMiddleware;
 use App\Http\Controllers\Auth\LoginController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+use App\Http\Controllers\FavoriteController;
+use App\Http\Controllers\VueloController;
 
 // --- RUTAS DE PROCESAMIENTO ---
 Route::get('/checkout/{id}', function ($id) {
@@ -83,3 +85,23 @@ Route::middleware(['auth', AdminMiddleware::class])->group(function () {
 });
 
 // NOTA: Se eliminó la ruta /home y la referencia al HomeController para evitar confusiones.
+
+
+
+Route::get('/vuelos', [VueloController::class, 'index'])->name('vuelos.index');
+Route::get('/vuelos/{id}', [VueloController::class, 'show'])->name('checkout.vuelo');
+
+// Ruta para los Términos y Condiciones
+Route::get('/terminos', function () {
+    return view('legal.terminos');
+})->name('terms');
+
+Route::get('/politica-de-privacidad', function () {
+    return view('legal.privacidad');
+})->name('privacy');
+
+// Rutas de Favoritos (Solo para usuarios logueados)
+Route::middleware(['auth'])->group(function () {
+    Route::get('/favoritos', [FavoriteController::class, 'index'])->name('favorites.index');
+    Route::post('/favoritos/{id}/{type}', [FavoriteController::class, 'toggle'])->name('favorites.toggle');
+});
