@@ -3,11 +3,19 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
+
 
 class VueloController extends Controller
 {
+    
     public function index() 
     {
+        Mail::raw('Correo de prueba desde BonVoy', function ($message) {
+            $message->to('ferzavalapalacios@gmail.com')
+                    ->subject('Prueba de correo BonVoy');
+    });
+
         $vuelos = [
             [
                 'id' => 'orf_1',

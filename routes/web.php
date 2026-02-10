@@ -12,10 +12,11 @@ use App\Http\Controllers\FavoriteController;
 use App\Http\Controllers\VueloController;
 
 // --- RUTAS DE PROCESAMIENTO ---
+// Fíjate que el {id} esté presente en la URL
 Route::get('/checkout/{id}', function ($id) {
-    $destino = Contenido::findOrFail($id);
+    $destino = \App\Models\Contenido::findOrFail($id);
     return view('checkout', compact('destino'));
-})->middleware('auth')->name('checkout');
+})->name('checkout');
 
 Route::post('/finalizar-pago', function (Request $request) {
     $reserva = \App\Models\Reserva::create([
