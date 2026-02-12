@@ -12,10 +12,11 @@ use App\Http\Controllers\FavoriteController;
 use App\Http\Controllers\VueloController;
 
 // --- RUTAS DE PROCESAMIENTO ---
+// Fíjate que el {id} esté presente en la URL
 Route::get('/checkout/{id}', function ($id) {
-    $destino = Contenido::findOrFail($id);
+    $destino = \App\Models\Contenido::findOrFail($id);
     return view('checkout', compact('destino'));
-})->middleware('auth')->name('checkout');
+})->name('checkout');
 
 Route::post('/finalizar-pago', function (Request $request) {
     $reserva = \App\Models\Reserva::create([
@@ -117,5 +118,4 @@ Route::post('/reservar/pase', [ReservaController::class, 'agregarPase'])->name('
 
 // Esta ruta recibe el ID (2 o 6 que pusimos en el código) y carga la vista de checkout que ya tienes
 Route::get('/checkout/vuelo/{id}', [ReservaController::class, 'mostrarCheckoutVuelo'])->name('checkout.vuelo');
-
 

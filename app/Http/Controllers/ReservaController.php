@@ -2,16 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\ReservaConfirmada;
 use App\Models\Reserva;
-use App\Models\ContenidoController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 
 class ReservaController extends Controller
 {
     public function store(Request $request)
     {
-        Reserva::create([
+        // Crear la reserva
+        $reserva = Reserva::create([
             'user_id' => Auth::id(),
             'contenido_id' => $request->contenido_id,
             'total' => $request->total ?? 0,
@@ -19,7 +21,13 @@ class ReservaController extends Controller
             'fecha_reserva' => now(),
         ]);
 
-        return redirect()->route('home')->with('success', 'Reserva realizada');
+        // Enviar correo de confirmación
+        Mail::to(Auth::user()->email)
+            ->send(new ReservaConfirmada($reserva));
+
+        return redirect()
+            ->route('home')
+            ->with('success', 'Reserva realizada. Revisa tu correo 📧');
     }
 
     public function agregarPase(Request $request)
@@ -58,6 +66,3 @@ class ReservaController extends Controller
         return view('checkout', compact('destino'));
     }
 }
-
-
-
