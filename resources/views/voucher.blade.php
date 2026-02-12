@@ -21,7 +21,7 @@
         }
 
         .voucher-wrapper {
-            max-width: 950px; /* Más ancho */
+            max-width: 950px;
             margin: 50px auto;
             padding: 0 20px;
         }
@@ -35,7 +35,6 @@
             border: 1px solid #e2e8f0;
         }
 
-        /* Lado Izquierdo (Info Principal) */
         .ticket-main {
             flex: 2;
             padding: 40px;
@@ -43,7 +42,6 @@
             position: relative;
         }
 
-        /* Lado Derecho (Resumen rápido/Corte) */
         .ticket-stub {
             flex: 0.8;
             background-color: #f8fafc;
@@ -60,9 +58,9 @@
         }
 
         .logo-container img {
-            height: 85px; /* Logo más grande */
+            height: 85px;
             width: auto;
-            object-contain: contain;
+            object-fit: contain;
         }
 
         .ticket-label {
@@ -77,14 +75,14 @@
         .ticket-value {
             font-size: 1.1rem;
             font-weight: 700;
-            color: #1a3c4d; /* bonvoy-navy */
+            color: #1a3c4d;
             margin-bottom: 20px;
         }
 
         .dest-title {
             font-family: 'Bebas Neue', sans-serif;
             font-size: 3.5rem;
-            color: #126e82; /* bonvoy-main */
+            color: #126e82;
             line-height: 1;
             margin-bottom: 30px;
             letter-spacing: 1px;
@@ -108,19 +106,12 @@
             margin-top: 10px;
         }
 
-        .total-box {
-            margin-top: 20px;
-            padding-top: 20px;
-            border-top: 1px solid #e2e8f0;
-        }
-
         .total-price {
             font-size: 2.5rem;
             font-weight: 900;
             color: #1a3c4d;
         }
 
-        /* Círculos para el efecto de ticket */
         .ticket-main::before, .ticket-main::after {
             content: '';
             position: absolute;
@@ -134,21 +125,20 @@
         .ticket-main::after { bottom: -15px; }
 
         .btn-action {
-            background: #1a3c4d;
-            color: white;
-            padding: 12px 25px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 20px;
             border-radius: 12px;
             font-weight: 700;
             text-decoration: none;
-            transition: 0.3s;
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
+            transition: all 0.3s;
+            cursor: pointer;
         }
 
         .btn-action:hover {
-            background: #126e82;
             transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
         }
 
         @media (max-width: 768px) {
@@ -204,7 +194,7 @@
                 <div class="ticket-label" style="margin-top: -5px;">MXN</div>
 
                 <div style="margin-top: 40px;">
-                    <svg width="100" height="100" viewBox="0 0 24 24" fill="none" stroke="#1a3c4d" stroke-width="1" stroke-linecap="round" stroke-linejoin="round opacity-20">
+                    <svg width="100" height="100" viewBox="0 0 24 24" fill="none" stroke="#1a3c4d" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" style="opacity: 0.2;">
                         <rect x="3" y="3" width="7" height="7"></rect>
                         <rect x="14" y="3" width="7" height="7"></rect>
                         <rect x="14" y="14" width="7" height="7"></rect>
@@ -219,19 +209,66 @@
             </div>
         </div>
 
-        <div class="no-print" style="margin-top: 40px; display: flex; justify-content: space-between; align-items: center;">
+        <div class="no-print" style="margin-top: 40px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px;">
             <a href="{{ route('home') }}" style="color: #94a3b8; font-weight: 700; text-decoration: none; font-size: 0.9rem;" class="hover:text-bonvoy-main transition">
                 &larr; Volver al inicio
             </a>
 
             <div style="display: flex; gap: 15px;">
-                <a href="javascript:window.print()" class="btn-action">
+                
+                {{-- BOTÓN GOOGLE CALENDAR --}}
+                <a href="{{ $calendarUrl ?? '#' }}" target="_blank" onclick="mostrarAvisoCalendario()" class="btn-action" style="background-color: #ffffff; color: #4285F4; border: 2px solid #4285F4;">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                        <line x1="16" y1="2" x2="16" y2="6"></line>
+                        <line x1="8" y1="2" x2="8" y2="6"></line>
+                        <line x1="3" y1="10" x2="21" y2="10"></line>
+                    </svg>
+                    Agendar en Google
+                </a>
+
+                {{-- BOTÓN IMPRIMIR --}}
+                <a href="javascript:window.print()" class="btn-action" style="background-color: #1a3c4d; color: white; border: 2px solid #1a3c4d;">
                     <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path></svg>
                     Imprimir Comprobante
                 </a>
             </div>
         </div>
     </div>
+
+    {{-- Script para Notificación Flotante (Toast) --}}
+    <script>
+        function mostrarAvisoCalendario() {
+            // Crea el elemento de notificación dinámicamente
+            const notificacion = document.createElement('div');
+            
+            // Estilos Tailwind para alerta bonita
+            notificacion.className = 'fixed top-6 right-6 bg-white border-l-4 border-blue-500 text-slate-700 px-6 py-4 rounded-lg shadow-2xl z-50 flex items-center gap-4 transition-all duration-500 transform translate-x-full';
+            
+            notificacion.innerHTML = `
+                <div class="bg-blue-100 text-blue-500 p-2 rounded-full">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                </div>
+                <div>
+                    <h4 class="font-bold text-sm">¡Redirigiendo a Google!</h4>
+                    <p class="text-xs text-gray-500">Confirma guardar el evento en la nueva pestaña.</p>
+                </div>
+            `;
+
+            document.body.appendChild(notificacion);
+
+            // Animación de entrada
+            setTimeout(() => {
+                notificacion.classList.remove('translate-x-full');
+            }, 100);
+
+            // Desaparecer después de 4 segundos
+            setTimeout(() => {
+                notificacion.classList.add('translate-x-full', 'opacity-0');
+                setTimeout(() => notificacion.remove(), 500);
+            }, 4000);
+        }
+    </script>
 
 </body>
 </html>
