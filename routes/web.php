@@ -105,3 +105,17 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/favoritos', [FavoriteController::class, 'index'])->name('favorites.index');
     Route::post('/favoritos/{id}/{type}', [FavoriteController::class, 'toggle'])->name('favorites.toggle');
 });
+
+use App\Http\Controllers\ReservaController;
+
+// Esta es la ruta que procesa el formulario POST
+Route::post('/reservar/pase', [ReservaController::class, 'agregarPase'])->name('reserva.agregarPase');
+
+// app/Models/Contenido.php
+
+
+
+// Esta ruta recibe el ID (2 o 6 que pusimos en el código) y carga la vista de checkout que ya tienes
+Route::get('/checkout/vuelo/{id}', [ReservaController::class, 'mostrarCheckoutVuelo'])->name('checkout.vuelo');
+
+

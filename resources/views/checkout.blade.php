@@ -12,24 +12,21 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
     <style>
-        /* Patrón de fondo profesional */
         .bg-pattern {
             background-color: #f8fafc;
             background-image: radial-gradient(#cbd5e1 0.5px, transparent 0.5px);
             background-size: 24px 24px;
         }
-
-        /* Ocultar flechas en inputs numéricos */
         input[type=number]::-webkit-inner-spin-button, 
         input[type=number]::-webkit-outer-spin-button { 
             -webkit-appearance: none; margin: 0; 
         }
-
-        /* Efecto de cristal para el header */
         .glass-header {
             background: rgba(255, 255, 255, 0.8);
             backdrop-filter: blur(10px);
         }
+        @keyframes shine { 100% { left: 125%; } }
+        .animate-shine { animation: shine 0.8s infinite; }
     </style>
 </head>
 <body class="font-sans text-bonvoy-dark antialiased bg-pattern min-h-screen flex flex-col">
@@ -77,16 +74,35 @@
 
                     <div class="space-y-4 mb-8">
                         <div class="flex justify-between text-gray-500 font-medium">
-                            <span>Subtotal</span>
+                            <span>Subtotal (Destino)</span>
                             <span>${{ number_format($destino->precio, 2) }}</span>
                         </div>
+
+                        {{-- MOSTRAR PASES DESDE LA SESIÓN --}}
+                        @if(session('carrito_pases'))
+                            <div class="pt-2 space-y-2 border-t border-gray-100">
+                                <p class="text-[10px] font-black text-bonvoy-teal uppercase tracking-widest">Membresías Neopass</p>
+                                @foreach(session('carrito_pases') as $pase)
+                                    <div class="flex justify-between text-gray-500 text-sm">
+                                        <span class="italic">{{ $pase['tipo'] }}</span>
+                                        <span>${{ number_format($pase['precio'], 2) }}</span>
+                                    </div>
+                                @endforeach
+                            </div>
+                        @endif
+
                         <div class="flex justify-between text-gray-500 font-medium italic">
                             <span>Cargo por servicio</span>
                             <span class="text-green-600">¡Gratis!</span>
                         </div>
+
                         <div class="border-t border-dashed pt-4 flex justify-between items-center">
                             <span class="font-bold text-bonvoy-navy">Total Final</span>
-                            <span class="text-2xl font-black text-bonvoy-main">${{ number_format($destino->precio, 2) }}</span>
+                            @php
+                                $totalPases = collect(session('carrito_pases', []))->sum('precio');
+                                $granTotal = $destino->precio + $totalPases;
+                            @endphp
+                            <span class="text-2xl font-black text-bonvoy-main">${{ number_format($granTotal, 2) }}</span>
                         </div>
                     </div>
 
@@ -96,7 +112,7 @@
                                 <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"></path></svg>
                             </div>
                             <p class="text-xs text-bonvoy-navy/80 leading-relaxed">
-                                <span class="font-bold">Garantía BonVoy:</span> Cancelación flexible y soporte premium incluido en tu compra.
+                                <span class="font-bold">Garantía BonVoy:</span> Cancelación flexible y soporte premium incluido.
                             </p>
                         </div>
                     </div>
@@ -116,7 +132,14 @@
                         <form action="{{ route('pago.procesar') }}" method="POST" class="space-y-10">
                             @csrf
                             <input type="hidden" name="contenido_id" value="{{ $destino->id }}">
-                            <input type="hidden" name="precio_total" value="{{ $destino->precio }}">
+                            <input type="hidden" name="precio_total" value="{{ $granTotal }}">
+
+                            {{-- Enviar pases al controlador --}}
+                            @if(session('carrito_pases'))
+                                @foreach(session('carrito_pases') as $pase)
+                                    <input type="hidden" name="pases_adicionales[]" value="{{ $pase['tipo'] }}">
+                                @endforeach
+                            @endif
 
                             <section>
                                 <h3 class="text-bonvoy-dark font-bold text-lg mb-6 flex items-center gap-3">
@@ -201,12 +224,12 @@
                                     class="group relative w-full bg-bonvoy-main text-white font-black py-5 rounded-[1.5rem] shadow-xl shadow-bonvoy-main/40 hover:shadow-2xl hover:shadow-bonvoy-main/50 transform hover:-translate-y-1 transition-all duration-300 overflow-hidden">
                                     <div class="absolute inset-0 w-1/4 h-full bg-white/20 -skew-x-12 -translate-x-full group-hover:animate-shine"></div>
                                     <span class="relative flex items-center justify-center gap-3 text-xl uppercase tracking-tighter">
-                                        Confirmar Pago ${{ number_format($destino->precio, 2) }}
+                                        Confirmar Pago ${{ number_format($granTotal, 2) }}
                                     </span>
                                 </button>
                                 
                                 <p class="text-center text-[0.65rem] text-slate-400 mt-6 leading-relaxed px-10">
-                                    Al completar tu pago, confirmas que has leído y aceptas nuestros <a href="#" class="text-bonvoy-main font-bold hover:underline">Términos de Servicio</a> y <a href="#" class="text-bonvoy-main font-bold hover:underline">Políticas de Cancelación</a>.
+                                    Al completar tu pago, confirmas que has leído y aceptas nuestros <a href="#" class="text-bonvoy-main font-bold hover:underline">Términos de Servicio</a>.
                                 </p>
                             </div>
                         </form>

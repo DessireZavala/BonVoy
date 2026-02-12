@@ -53,4 +53,6 @@ class ContenidoController extends Controller
         
         return redirect()->route('admin.dashboard')->with('success', 'Destino eliminado');
     }
+
+    
 }

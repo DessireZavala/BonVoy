@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-<head>
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="scroll-smooth">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>BonVoy - Viajes y Experiencias</title>
@@ -116,16 +115,119 @@
                     <span class="font-bold text-xs md:text-sm text-gray-500 group-hover:text-bonvoy-main transition">Paquetes</span>
                 </a>
 
-                <a href="{{ route('home', ['search' => 'actividad']) }}" class="group flex flex-col items-center gap-2 cursor-pointer transition hover:-translate-y-1 w-20">
-                    <div class="w-14 h-14 md:w-16 md:h-16 bg-gray-50 rounded-2xl flex items-center justify-center group-hover:bg-bonvoy-main transition duration-300 border border-transparent group-hover:border-bonvoy-main">
-                        <img src="{{ asset('assets/img/pasesicon.png') }}" class="w-8 h-8 object-contain transition group-hover:brightness-0 group-hover:invert opacity-70 group-hover:opacity-100">
-                    </div>
-                    <span class="font-bold text-xs md:text-sm text-gray-500 group-hover:text-bonvoy-main transition">Tickets</span>
+                <a href="#seccion-pases" class="group flex flex-col items-center gap-2 cursor-pointer transition hover:-translate-y-1 w-20">
+                  <div class="w-14 h-14 md:w-16 md:h-16 bg-gray-50 rounded-2xl flex items-center justify-center group-hover:bg-bonvoy-main transition duration-300 border border-transparent group-hover:border-bonvoy-main">
+                   <img src="{{ asset('assets/img/pasesicon.png') }}" class="w-8 h-8 object-contain transition group-hover:brightness-0 group-hover:invert opacity-70 group-hover:opacity-100">
+                  </div>
+                 <span class="font-bold text-xs md:text-sm text-gray-500 group-hover:text-bonvoy-main transition">Tickets</span>
                 </a>
 
             </div>
         </div>
+        {{-- ========================================== --}}
+{{-- SECCIÓN BONVOY AI (SIMULACIÓN GEMINI) --}}
+{{-- ========================================== --}}
+<div x-data="{ 
+    query: '', 
+    response: '', 
+    loading: false, 
+    showResponse: false,
+    recomendar() {
+        if(this.query.trim() === '') return;
+        this.loading = true;
+        this.showResponse = false;
+        
+        // Simulación de 'pensando' (1.5 segundos)
+        setTimeout(() => {
+            this.loading = false;
+            this.showResponse = true;
+            // Aquí simulamos que la IA analiza tus destinos destacados
+            const respuestas = [
+                'Basado en tus gustos, el 🇯🇵 <b>Vuelo a Japón</b> es la mejor opción hoy por su temporada alta.',
+                '¡Gran elección! Para aventura, nada supera al 🦁 <b>Safari en Tanzania</b>. Está en oferta.',
+                'Si buscas relax, el 🏖️ <b>Resort en Cancún</b> tiene el mejor clima esta semana.',
+                'Para algo mágico, te recomiendo 🏰 <b>Disneyland</b>. ¡Es perfecto para ir en grupo!',
+                '¿Buscas cultura? El 🇪🇸 <b>Vuelo a Madrid</b> tiene un precio increíble ahora mismo.'
+            ];
+            // Escoge una respuesta aleatoria
+            this.response = respuestas[Math.floor(Math.random() * respuestas.length)];
+        }, 1500);
+    }
+}" class="max-w-4xl mx-auto px-6 mt-16 mb-8 relative z-30">
 
+    <div class="text-center mb-6">
+        <span class="bg-gradient-to-r from-blue-600 via-purple-500 to-pink-500 text-transparent bg-clip-text font-black tracking-widest text-xs uppercase mb-2 block animate-pulse">
+            Inteligencia Artificial Beta
+        </span>
+        <h3 class="font-display text-3xl text-bonvoy-navy">¿Indeciso? <span class="text-purple-500">Deja que la IA elija tu destino</span></h3>
+    </div>
+
+    {{-- Input estilo Gemini --}}
+    <div class="relative group">
+        <div class="absolute -inset-0.5 bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 rounded-full blur opacity-30 group-hover:opacity-75 transition duration-1000 group-hover:duration-200"></div>
+        
+        <div class="relative bg-white rounded-full flex items-center p-2 shadow-xl border border-gray-50">
+            <div class="pl-4 pr-2">
+                {{-- Icono Sparkle (Destello IA) --}}
+                <svg class="w-6 h-6 text-purple-500" fill="url(#gradient-ai)" viewBox="0 0 24 24">
+                    <defs>
+                        <linearGradient id="gradient-ai" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style="stop-color:#3b82f6;stop-opacity:1" />
+                            <stop offset="100%" style="stop-color:#ec4899;stop-opacity:1" />
+                        </linearGradient>
+                    </defs>
+                    <path d="M12 2L14.5 9.5L22 12L14.5 14.5L12 22L9.5 14.5L2 12L9.5 9.5L12 2Z" fill="currentColor"/>
+                </svg>
+            </div>
+            
+            <input type="text" x-model="query" 
+                @keydown.enter="recomendar()"
+                placeholder="Ej. Quiero una aventura exótica o un viaje barato a Europa..." 
+                class="flex-grow bg-transparent border-none outline-none text-gray-600 placeholder-gray-400 px-2 py-3 text-sm md:text-base focus:ring-0">
+            
+            <button @click="recomendar()" 
+                class="bg-slate-900 hover:bg-slate-800 text-white rounded-full p-3 transition-transform transform active:scale-95 flex items-center justify-center w-12 h-12">
+                
+                {{-- Icono Flecha --}}
+                <svg x-show="!loading" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                
+                {{-- Spinner de carga --}}
+                <svg x-show="loading" class="animate-spin w-5 h-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+            </button>
+        </div>
+    </div>
+
+    {{-- Tarjeta de Respuesta de la IA --}}
+    <div x-show="showResponse" 
+         x-transition:enter="transition ease-out duration-500"
+         x-transition:enter-start="opacity-0 translate-y-4"
+         x-transition:enter-end="opacity-100 translate-y-0"
+         style="display: none;"
+         class="mt-6 bg-gradient-to-br from-white to-blue-50 border border-blue-100 rounded-3xl p-6 shadow-lg relative overflow-hidden">
+        
+        {{-- Adorno de fondo --}}
+        <div class="absolute top-0 right-0 -mt-4 -mr-4 w-32 h-32 bg-purple-200 rounded-full blur-3xl opacity-30"></div>
+        
+        <div class="flex gap-4 items-start relative z-10">
+            <div class="bg-white p-2 rounded-2xl shadow-sm text-2xl border border-gray-100">✨</div>
+            <div>
+                <h4 class="font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600 text-sm mb-1 uppercase tracking-wider">BonVoy AI sugiere:</h4>
+                <p class="text-slate-700 text-lg leading-relaxed" x-html="response"></p>
+                <div class="mt-4 flex gap-2">
+                    <a href="#resultados" @click="document.querySelector('section.py-20').scrollIntoView({behavior: 'smooth'})" class="text-xs font-bold text-white bg-slate-900 px-4 py-2 rounded-lg shadow-md hover:bg-slate-700 transition flex items-center gap-2">
+                        Ver oferta ahora
+                        <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+{{-- FIN SECCIÓN AI --}}
         <section class="max-w-7xl mx-auto px-6 py-20 w-full">
             <div class="flex items-end justify-between mb-10 border-b border-gray-200 pb-4">
                 <h2 class="font-display text-5xl text-bonvoy-navy">
@@ -237,7 +339,7 @@
             </div>
         </section>
 
-        <section class="bg-bonvoy-navy py-24 relative overflow-hidden">
+        <section id="seccion-pases" class="bg-bonvoy-navy py-24 relative overflow-hidden">
             <div class="absolute top-0 left-0 w-full h-full overflow-hidden z-0 pointer-events-none">
                 <div class="absolute top-10 left-10 w-96 h-96 bg-bonvoy-light rounded-full mix-blend-overlay filter blur-[120px] opacity-20"></div>
                 <div class="absolute bottom-10 right-10 w-96 h-96 bg-bonvoy-main rounded-full mix-blend-overlay filter blur-[120px] opacity-20"></div>
@@ -248,53 +350,86 @@
                     <span class="text-bonvoy-light font-bold tracking-widest uppercase text-sm">Viaja sin límites</span>
                     <h2 class="font-display text-5xl md:text-6xl text-white mt-2">MEMBRESÍAS <span class="text-transparent bg-clip-text bg-gradient-to-r from-bonvoy-light to-white">NEOPASS</span></h2>
                     <p class="text-gray-300 text-lg max-w-2xl mx-auto mt-4">Elige el pase que se adapte a tu estilo de aventura.</p>
+                    
+                    {{-- Notificación de éxito --}}
+                    @if(session('success'))
+                        <div class="mt-6 bg-green-500/20 border border-green-500 text-green-100 px-6 py-3 rounded-2xl inline-block animate-bounce">
+                            {{ session('success') }}
+                        </div>
+                    @endif
                 </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 items-center">
-                    <div class="bg-white rounded-3xl p-8 shadow-xl border border-gray-100 flex flex-col h-auto md:h-[480px]">
-                        <div class="mb-4">
-                            <h3 class="font-display text-3xl text-gray-700">BÁSICO</h3>
-                            <div class="text-4xl font-bold text-bonvoy-navy mt-2">$500 <span class="text-sm text-gray-400 font-normal">/MXN</span></div>
-                        </div>
-                        <ul class="space-y-3 text-sm text-gray-600 mb-8 flex-1">
-                            <li class="flex items-start gap-3"><span class="text-green-500 font-bold">✓</span> Acceso estándar a atracciones</li>
-                            <li class="flex items-start gap-3"><span class="text-green-500 font-bold">✓</span> QR digital para acceso</li>
-                            <li class="flex items-start gap-3"><span class="text-green-500 font-bold">✓</span> Acceso según disponibilidad</li>
-                        </ul>
-                        <button class="w-full py-3 rounded-xl border-2 border-gray-200 text-gray-600 font-bold hover:border-bonvoy-main hover:text-bonvoy-main transition uppercase tracking-wide text-sm">AGREGAR</button>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 items-center">
+                
+                <div class="bg-white rounded-3xl p-8 shadow-xl border border-gray-100 flex flex-col h-auto md:h-[480px]">
+                    <div class="mb-4">
+                        <h3 class="font-display text-3xl text-gray-700">BÁSICO</h3>
+                        <div class="text-4xl font-bold text-bonvoy-navy mt-2">$500 <span class="text-sm text-gray-400 font-normal">/MXN</span></div>
                     </div>
-
-                    <div class="bg-white rounded-3xl p-8 shadow-2xl border-4 border-bonvoy-main relative transform md:scale-110 z-10 flex flex-col h-auto md:h-[520px]">
-                        <div class="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-bonvoy-main text-white px-4 py-1 rounded-full text-xs font-bold uppercase tracking-wider shadow-lg">Más Popular</div>
-                        <div class="mb-4 text-center border-b border-gray-100 pb-4">
-                            <h3 class="font-display text-4xl text-bonvoy-main">PLUS</h3>
-                            <div class="text-5xl font-bold text-bonvoy-navy mt-2">$1,500 <span class="text-sm text-gray-400 font-normal">/MXN</span></div>
-                        </div>
-                        <ul class="space-y-3 text-sm text-gray-600 mb-8 flex-1">
-                            <li class="flex items-start gap-3"><span class="text-bonvoy-main font-bold">✓</span> <span class="font-bold text-bonvoy-dark">Todo lo del pase Básico</span></li>
-                            <li class="flex items-start gap-3"><span class="text-bonvoy-main font-bold">✓</span> Acceso preferencial <strong>sin filas</strong></li>
-                            <li class="flex items-start gap-3"><span class="text-bonvoy-main font-bold">✓</span> Reservaciones prioritarias</li>
-                            <li class="flex items-start gap-3"><span class="text-bonvoy-main font-bold">✓</span> Descuentos especiales</li>
-                        </ul>
-                        <button class="w-full py-4 rounded-xl bg-bonvoy-main text-white font-bold shadow-lg shadow-bonvoy-main/30 hover:bg-bonvoy-teal transition uppercase tracking-wide text-sm">AGREGAR AHORA</button>
-                    </div>
-
-                    <div class="bg-slate-50 rounded-3xl p-8 shadow-xl border border-yellow-400/30 flex flex-col h-auto md:h-[480px]">
-                        <div class="mb-4">
-                            <h3 class="font-display text-3xl text-yellow-600">PREMIUM</h3>
-                            <div class="text-4xl font-bold text-bonvoy-navy mt-2">$2,500 <span class="text-sm text-gray-400 font-normal">/MXN</span></div>
-                        </div>
-                        <ul class="space-y-3 text-sm text-gray-600 mb-8 flex-1">
-                            <li class="flex items-start gap-3"><span class="text-yellow-500 font-bold">✓</span> <span class="font-bold text-bonvoy-dark">Todo lo del Pase Plus</span></li>
-                            <li class="flex items-start gap-3"><span class="text-yellow-500 font-bold">✓</span> Acceso <strong>VIP garantizado</strong></li>
-                            <li class="flex items-start gap-3"><span class="text-yellow-500 font-bold">✓</span> Experiencias exclusivas</li>
-                            <li class="flex items-start gap-3"><span class="text-yellow-500 font-bold">✓</span> Atención prioritaria</li>
-                        </ul>
-                        <button class="w-full py-3 rounded-xl border-2 border-yellow-400 text-yellow-600 font-bold hover:bg-yellow-400 hover:text-white transition uppercase tracking-wide text-sm">AGREGAR</button>
-                    </div>
+                    <ul class="space-y-3 text-sm text-gray-600 mb-8 flex-1">
+                        <li class="flex items-start gap-3"><span class="text-green-500 font-bold">✓</span> Acceso estándar a atracciones</li>
+                        <li class="flex items-start gap-3"><span class="text-green-500 font-bold">✓</span> QR digital para acceso</li>
+                        <li class="flex items-start gap-3"><span class="text-green-500 font-bold">✓</span> Acceso según disponibilidad</li>
+                    </ul>
+                    {{-- Formulario Ajustado --}}
+                    <form action="{{ route('reserva.agregarPase') }}" method="POST">
+                        @csrf
+                        <input type="hidden" name="tipo" value="BÁSICO">
+                        <input type="hidden" name="precio" value="500">
+                        <button type="submit" class="w-full py-3 rounded-xl border-2 border-gray-200 text-gray-600 font-bold hover:border-bonvoy-main hover:text-bonvoy-main transition uppercase tracking-wide text-sm">
+                            AGREGAR
+                        </button>
+                    </form>
                 </div>
+
+            <div class="bg-white rounded-3xl p-8 shadow-2xl border-4 border-bonvoy-main relative transform md:scale-110 z-10 flex flex-col h-auto md:h-[520px]">
+                <div class="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-bonvoy-main text-white px-4 py-1 rounded-full text-xs font-bold uppercase tracking-wider shadow-lg">Más Popular</div>
+                <div class="mb-4 text-center border-b border-gray-100 pb-4">
+                    <h3 class="font-display text-4xl text-bonvoy-main">PLUS</h3>
+                    <div class="text-5xl font-bold text-bonvoy-navy mt-2">$1,500 <span class="text-sm text-gray-400 font-normal">/MXN</span></div>
+                </div>
+                <ul class="space-y-3 text-sm text-gray-600 mb-8 flex-1">
+                    <li class="flex items-start gap-3"><span class="text-bonvoy-main font-bold">✓</span> <span class="font-bold text-bonvoy-dark">Todo lo del pase Básico</span></li>
+                    <li class="flex items-start gap-3"><span class="text-bonvoy-main font-bold">✓</span> Acceso preferencial <strong>sin filas</strong></li>
+                    <li class="flex items-start gap-3"><span class="text-bonvoy-main font-bold">✓</span> Reservaciones prioritarias</li>
+                    <li class="flex items-start gap-3"><span class="text-bonvoy-main font-bold">✓</span> Descuentos especiales</li>
+                </ul>
+                {{-- Formulario Ajustado --}}
+                <form action="{{ route('reserva.agregarPase') }}" method="POST">
+                    @csrf
+                    <input type="hidden" name="tipo" value="PLUS">
+                    <input type="hidden" name="precio" value="1500">
+                    <button type="submit" class="w-full py-4 rounded-xl bg-bonvoy-main text-white font-bold shadow-lg shadow-bonvoy-main/30 hover:bg-bonvoy-teal transition uppercase tracking-wide text-sm">
+                        AGREGAR AHORA
+                    </button>
+                </form>
             </div>
-        </section>
+
+            <div class="bg-slate-50 rounded-3xl p-8 shadow-xl border border-yellow-400/30 flex flex-col h-auto md:h-[480px]">
+                <div class="mb-4">
+                    <h3 class="font-display text-3xl text-yellow-600">PREMIUM</h3>
+                    <div class="text-4xl font-bold text-bonvoy-navy mt-2">$2,500 <span class="text-sm text-gray-400 font-normal">/MXN</span></div>
+                </div>
+                <ul class="space-y-3 text-sm text-gray-600 mb-8 flex-1">
+                    <li class="flex items-start gap-3"><span class="text-yellow-500 font-bold">✓</span> <span class="font-bold text-bonvoy-dark">Todo lo del Pase Plus</span></li>
+                    <li class="flex items-start gap-3"><span class="text-yellow-500 font-bold">✓</span> Acceso <strong>VIP garantizado</strong></li>
+                    <li class="flex items-start gap-3"><span class="text-yellow-500 font-bold">✓</span> Experiencias exclusivas</li>
+                    <li class="flex items-start gap-3"><span class="text-yellow-500 font-bold">✓</span> Atención prioritaria</li>
+                </ul>
+                {{-- Formulario Ajustado --}}
+                <form action="{{ route('reserva.agregarPase') }}" method="POST">
+                    @csrf
+                    <input type="hidden" name="tipo" value="PREMIUM">
+                    <input type="hidden" name="precio" value="2500">
+                    <button type="submit" class="w-full py-3 rounded-xl border-2 border-yellow-400 text-yellow-600 font-bold hover:bg-yellow-400 hover:text-white transition uppercase tracking-wide text-sm">
+                        AGREGAR
+                    </button>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</section>
 
     </div>
 
